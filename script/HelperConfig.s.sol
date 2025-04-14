@@ -3,6 +3,7 @@
 pragma solidity ^0.8.19;
 
 import {Script} from 'forge-std/Script.sol';
+import {MockV3Aggregator} from '../test/mock/MockV3Aggregator.sol';
 
 contract HelperConfig is Script{
 
@@ -10,7 +11,7 @@ contract HelperConfig is Script{
         address priceFeed;
     }
 
-    NetworkConfig activeNetworkConfig;
+    NetworkConfig public activeNetworkConfig;
 
     constructor (){
         if(block.chainid==11155111){
@@ -32,7 +33,15 @@ contract HelperConfig is Script{
 
         // //////////////   LOCAL CONFIG   /////////////
 
-    function getOrCreateAnvilEthConfig() public pure {
-       
-    }
+
+    function getOrCreateAnvilEthConfig() public returns(NetworkConfig memory) {
+    vm.startBroadcast();
+    MockV3Aggregator mockPriceFeed = new MockV3Aggregator(8, 2000e8);
+    vm.stopBroadcast();
+
+    return NetworkConfig({
+        priceFeed: address(mockPriceFeed)
+    });
+}
+
 }
