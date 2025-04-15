@@ -1,66 +1,103 @@
-## Foundry
+# Foundry Fund Me
 
-**Foundry is a blazing fast, portable and modular toolkit for Ethereum application development written in Rust.**
+## Getting Started
 
-Foundry consists of:
+### Requirements
 
--   **Forge**: Ethereum testing framework (like Truffle, Hardhat and DappTools).
--   **Cast**: Swiss army knife for interacting with EVM smart contracts, sending transactions and getting chain data.
--   **Anvil**: Local Ethereum node, akin to Ganache, Hardhat Network.
--   **Chisel**: Fast, utilitarian, and verbose solidity REPL.
+- [git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
+  - You'll know you did it right if you can run `git --version` and you see a response like `git version x.x.x`
+- [foundry](https://getfoundry.sh/)
+  - You'll know you did it right if you can run `forge --version` and you see a response like `forge 0.2.0 (816e00b 2023-03-16T00:05:26.396218Z)`
 
-## Documentation
 
-https://book.getfoundry.sh/
 
-## Usage
+  # Usage
 
-### Build
+## Deploy
 
-```shell
-$ forge build
+```
+forge script script/DeployFundMe.s.sol
 ```
 
-### Test
+## Testing
 
-```shell
-$ forge test
+1. Unit
+2. Integration
+3. Forked
+4. Staging
+
+
+```
+forge test
 ```
 
-### Format
+or 
 
-```shell
-$ forge fmt
+```
+// Only run test functions matching the specified regex pattern.
+
+forge test --match-test testFunctionName
 ```
 
-### Gas Snapshots
+or
 
-```shell
-$ forge snapshot
+```
+forge test --fork-url $SEPOLIA_RPC_URL
 ```
 
-### Anvil
+### Test Coverage
 
-```shell
-$ anvil
+```
+forge coverage
 ```
 
-### Deploy
 
-```shell
-$ forge script script/Counter.s.sol:CounterScript --rpc-url <your_rpc_url> --private-key <your_private_key>
+
+
+
+
+
+
+
+# Deployment to a testnet or mainnet
+
+1. Setup environment variables
+2. Get testnet ETH
+3. Deploy
+
+### scripts
+
+
+```
+forge script script/DeployFundMe.s.sol --rpc-url $SEPOLIA_RPC_URL --private-key $PRIVATE_KEY --broadcast --verify --etherscan-api-key $ETHERSCAN_API_KEY
 ```
 
-### Cast
+After deploying to a testnet or local net, you can run the scripts. 
 
-```shell
-$ cast <subcommand>
+Using cast deployed locally example: 
+
+```
+cast send <FUNDME_CONTRACT_ADDRESS> "fund()" --value 0.1ether --private-key <PRIVATE_KEY>
 ```
 
-### Help
 
-```shell
-$ forge --help
-$ anvil --help
-$ cast --help
+### Withdraw
+
+```
+cast send <FUNDME_CONTRACT_ADDRESS> "withdraw()"  --private-key <PRIVATE_KEY>
+```
+
+## Estimate gas
+
+You can estimate how much gas things cost by running:
+
+```
+forge snapshot
+```
+# Formatting
+
+
+To run code formatting:
+```
+forge fmt
 ```
